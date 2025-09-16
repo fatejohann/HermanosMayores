@@ -1,0 +1,79 @@
+<div class="homepage-container">
+  <!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <div class="logo">
+        🎓 Hermanos Mayores
+      </div>
+      <div class="user-section">
+        <span class="user-email">{{ userEmail }}</span>
+        <button class="logout-btn" (click)="logout()">Cerrar Sesión</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="container">
+      <!-- Welcome Section -->
+      <section class="welcome-section">
+        <h1>¡Bienvenido de vuelta!</h1>
+        <p>Gestiona tus mentorías y conecta con hermanos mayores</p>
+      </section>
+
+      <div class="content-grid">
+  <!-- Próximas Mentorías -->
+  <section class="card">
+    <h2 class="card-title">📅 Próximas Mentorías</h2>
+
+    @if (upcomingMentorships.length > 0) {
+      <div class="mentorships-list">
+        @for (mentorship of upcomingMentorships; track mentorship) {
+          <div 
+            class="mentorship-item" 
+            (click)="viewMentorshipDetails(mentorship)"
+          >
+            <div class="mentorship-info">
+              <h3>{{ mentorship.subject }}</h3>
+              <p><strong>Mentor:</strong> {{ mentorship.mentor }}</p>
+              <p><strong>Fecha:</strong> {{ mentorship.date }} a las {{ mentorship.time }}</p>
+            </div>
+            <div class="mentorship-status" [ngClass]="mentorship.status">
+              {{ mentorship.status }}
+            </div>
+          </div>
+        }
+      </div>
+    } @else {
+      <p class="no-items">No tienes mentorías programadas</p>
+    }
+  </section>
+
+  <!-- Mentores Disponibles -->
+  <section class="card">
+    <h2 class="card-title">👥 Mentores Disponibles</h2>
+    <div class="mentors-list">
+      @for (mentor of availableMentors; track mentor) {
+        <div class="mentor-item">
+          <div class="mentor-info">
+            <h3>{{ mentor.name }}</h3>
+            <p><strong>Especialidad:</strong> {{ mentor.subject }}</p>
+            <p><strong>Experiencia:</strong> {{ mentor.experience }}</p>
+            <div class="rating">
+              ⭐ {{ mentor.rating }}/5
+            </div>
+          </div>
+          <button class="book-btn" (click)="bookMentorship(mentor)">
+            Solicitar Mentoría
+          </button>
+        </div>
+      }
+    </div>
+  </section>
+</div>
+
+
+     
+    </div>
+  </main>
+</div>

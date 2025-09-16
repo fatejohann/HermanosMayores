@@ -1,0 +1,72 @@
+<div class="login-container">
+  <div class="back-button">
+    <button (click)="goToRegister()">← Volver</button>
+  </div>
+  
+  <div class="login-form-container">
+    <div class="logo-section">
+      <div class="logo">
+        🎓 Hermanos Mayores
+      </div>
+    </div>
+    
+    <div class="form-section">
+      <div class="tab-container">
+        <button class="tab active">Iniciar Sesión</button>
+        <button class="tab" (click)="goToRegister()">Registrarse</button>
+      </div>
+      
+      <div class="welcome-text">
+        <h2>Bienvenido de vuelta</h2>
+        <p>Ingresa tus credenciales para acceder a tu cuenta</p>
+      </div>
+      
+      <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+        <div class="input-group">
+          <label for="email">Correo electrónico</label>
+          <input 
+            type="email" 
+            id="email" 
+            name="email"
+            [(ngModel)]="email"
+            placeholder="tu@universidad.edu"
+            required
+          >
+        </div>
+        
+        <div class="input-group">
+          <label for="password">Contraseña</label>
+          <div class="password-input-container">
+            <input 
+              [type]="showPassword ? 'text' : 'password'"
+              id="password"
+              name="password"
+              [(ngModel)]="password"
+              placeholder="••••••••"
+              required
+            >
+            <button 
+              type="button" 
+              class="toggle-password"
+              (click)="togglePasswordVisibility()"
+            >
+              {{ showPassword ? '👁️' : '👁️‍🗨️' }}
+            </button>
+          </div>
+        </div>
+        
+        <div *ngIf="errorMessage" class="error-message">
+          {{ errorMessage }}
+        </div>
+        
+        <button type="submit" class="login-button">
+          Iniciar Sesión
+        </button>
+        
+        <div class="forgot-password">
+          <a href="#" (click)="forgotPassword()">¿Olvidaste tu contraseña?</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
