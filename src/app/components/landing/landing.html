@@ -1,0 +1,225 @@
+<div class="landing-page">
+  <!-- Navigation Header -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="nav-logo">
+        <span class="logo-icon">🎓</span>
+        <span class="logo-text">Hermanos Mayores</span>
+      </div>
+      <div class="nav-menu">
+        <a href="#inicio" (click)="scrollToSection('inicio')">Inicio</a>
+        <a href="#caracteristicas" (click)="scrollToSection('caracteristicas')">Características</a>
+        <a href="#testimonios" (click)="scrollToSection('testimonios')">Testimonios</a>
+        <a href="#contacto" (click)="scrollToSection('contacto')">Contacto</a>
+      </div>
+      <div class="nav-buttons">
+        <button class="btn-secondary" (click)="goToLogin()">Iniciar Sesión</button>
+        <button class="btn-primary" (click)="goToRegister()">Registrarse</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section id="inicio" class="hero-section">
+    <div class="hero-background">
+      <div class="hero-container">
+        <div class="hero-content">
+          <h1 class="hero-title">
+            Conecta con <span class="highlight">Hermanos Mayores</span>
+            <br>y alcanza tu potencial académico
+          </h1>
+          <p class="hero-subtitle">
+            Una plataforma que conecta estudiantes universitarios con mentores de semestres superiores 
+            para brindar apoyo académico, orientación profesional y experiencias compartidas.
+          </p>
+          <div class="hero-buttons">
+            <button class="btn-hero-primary" (click)="goToRegister()">
+              Comenzar Ahora
+              <span class="button-arrow">→</span>
+            </button>
+            <button class="btn-hero-secondary" (click)="scrollToSection('caracteristicas')">
+              Conocer Más
+            </button>
+          </div>
+        </div>
+        <div class="hero-image">
+          <div class="hero-illustration">
+            <div class="floating-card card-1">
+              <div class="card-icon">📚</div>
+              <div class="card-text">Cálculo Diferencial</div>
+            </div>
+            <div class="floating-card card-2">
+              <div class="card-icon">💡</div>
+              <div class="card-text">Consejos de Estudio</div>
+            </div>
+            <div class="floating-card card-3">
+              <div class="card-icon">🎯</div>
+              <div class="card-text">Orientación Profesional</div>
+            </div>
+            <div class="central-avatar">
+              <div class="avatar-circle">
+                <span class="avatar-icon">👥</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section class="stats-section">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-item" *ngFor="let stat of stats">
+          <div class="stat-number">{{ stat.number }}</div>
+          <div class="stat-label">{{ stat.label }}</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="caracteristicas" class="features-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">¿Por qué elegir Hermanos Mayores?</h2>
+        <p class="section-subtitle">
+          Descubre las ventajas de tener un mentor universitario que realmente entiende tu experiencia
+        </p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card" *ngFor="let feature of features">
+          <div class="feature-icon">{{ feature.icon }}</div>
+          <h3 class="feature-title">{{ feature.title }}</h3>
+          <p class="feature-description">{{ feature.description }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works Section -->
+  <section class="how-it-works-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">¿Cómo funciona?</h2>
+        <p class="section-subtitle">Tres simples pasos para comenzar tu experiencia de mentoría</p>
+      </div>
+      <div class="steps-container">
+        <div class="step">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <h3>Regístrate</h3>
+            <p>Crea tu perfil indicando tu carrera, semestre actual y áreas donde necesitas apoyo.</p>
+          </div>
+        </div>
+        <div class="step-arrow">→</div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h3>Encuentra tu Mentor</h3>
+            <p>Explora perfiles de hermanos mayores de tu carrera y elige con quien te gustaría conectar.</p>
+          </div>
+        </div>
+        <div class="step-arrow">→</div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h3>Comienza a Aprender</h3>
+            <p>Agenda sesiones, recibe orientación y acelera tu crecimiento académico.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section id="testimonios" class="testimonials-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Lo que dicen nuestros estudiantes</h2>
+        <p class="section-subtitle">Experiencias reales de estudiantes que han transformado su vida académica</p>
+      </div>
+      <div class="testimonials-grid">
+        <div class="testimonial-card" *ngFor="let testimonial of testimonials">
+          <div class="testimonial-rating">
+            <span *ngFor="let star of [1,2,3,4,5]" class="star">⭐</span>
+          </div>
+          <p class="testimonial-text">"{{ testimonial.text }}"</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">{{ testimonial.name.charAt(0) }}</div>
+            <div class="author-info">
+              <div class="author-name">{{ testimonial.name }}</div>
+              <div class="author-program">{{ testimonial.program }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <div class="container">
+      <div class="cta-content">
+        <h2 class="cta-title">¿Listo para comenzar tu jornada de mentoría?</h2>
+        <p class="cta-subtitle">
+          Únete a miles de estudiantes que ya están transformando su experiencia universitaria
+        </p>
+        <div class="cta-buttons">
+          <button class="btn-cta-primary" (click)="goToRegister()">
+            Registrarse Gratis
+            <span class="button-arrow">→</span>
+          </button>
+          <button class="btn-cta-secondary" (click)="goToLogin()">
+            Ya tengo cuenta
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer id="contacto" class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <div class="footer-logo">
+            <span class="logo-icon">🎓</span>
+            <span class="logo-text">Hermanos Mayores</span>
+          </div>
+          <p class="footer-description">
+            Conectando estudiantes universitarios para crear una comunidad de apoyo académico y crecimiento mutuo.
+          </p>
+        </div>
+        <div class="footer-section">
+          <h3 class="footer-title">Enlaces</h3>
+          <ul class="footer-links">
+            <li><a href="#inicio" (click)="scrollToSection('inicio')">Inicio</a></li>
+            <li><a href="#caracteristicas" (click)="scrollToSection('caracteristicas')">Características</a></li>
+            <li><a href="#testimonios" (click)="scrollToSection('testimonios')">Testimonios</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3 class="footer-title">Soporte</h3>
+          <ul class="footer-links">
+            <li><a href="#" (click)="goToLogin()">Centro de Ayuda</a></li>
+            <li><a href="#" (click)="goToLogin()">Términos de Servicio</a></li>
+            <li><a href="#" (click)="goToLogin()">Política de Privacidad</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3 class="footer-title">Contacto</h3>
+          <ul class="footer-links">
+            <li>📧 hola@hermanosmayores.com</li>
+            <li>📱 +503 7777-8888</li>
+            <li>📍 San Salvador, El Salvador</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Hermanos Mayores. Todos los derechos reservados.</p>
+      </div>
+    </div>
+  </footer>
+</div>

@@ -41,6 +41,10 @@ export class LoginComponent {
     alert('Función de registro pendiente de implementar');
   }
 
+  goBack(): void {
+    this.router.navigate(['/landing']);
+  }
+
   forgotPassword(): void {
     // Por ahora solo mostrar mensaje, después puedes implementar recuperación
     alert('Función de recuperación de contraseña pendiente de implementar');
