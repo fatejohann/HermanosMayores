@@ -21,10 +21,16 @@
         <p>Gestiona tus mentorías y conecta con hermanos mayores</p>
       </section>
 
-      <div class="content-grid">
+    <div class="content-grid">
+
   <!-- Próximas Mentorías -->
   <section class="card">
-    <h2 class="card-title">📅 Próximas Mentorías</h2>
+    <div class="card-header">
+      <h2 class="card-title">📅 Próximas Mentorías</h2>
+      <button class="add-mentorship-btn" (click)="addNewMentorship()">
+        <span>+</span> Nueva Mentoría
+      </button>
+    </div>
 
     @if (upcomingMentorships.length > 0) {
       <div class="mentorships-list">

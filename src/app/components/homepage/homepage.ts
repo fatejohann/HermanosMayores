@@ -80,4 +80,12 @@ export class HomepageComponent implements OnInit {
   viewMentorshipDetails(mentorship: any): void {
     alert(`Detalles de mentoría con ${mentorship.mentor}`);
   }
+
+  addNewMentorship(): void {
+    // Por ahora solo mostraremos un mensaje, pero aquí podrías:
+    // 1. Abrir un modal o navegar a una nueva página para crear la mentoría
+    // 2. Mostrar un formulario con los campos necesarios
+    // 3. Implementar la lógica para guardar la nueva mentoría
+    alert('Función para agregar nueva mentoría. Aquí se debería abrir un formulario o modal.');
+  }
 }
