@@ -1,0 +1,91 @@
+<!-- Modal Backdrop -->
+<div 
+  class="modal-backdrop" 
+  *ngIf="isVisible" 
+  (click)="hide()"
+></div>
+
+<!-- Modal Content -->
+<div class="modal" *ngIf="isVisible">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>{{ isEditMode ? 'Editar Mentoría' : 'Nueva Mentoría' }}</h2>
+      <button class="close-btn" (click)="hide()">×</button>
+    </div>
+
+    <div class="modal-body">
+      <form (ngSubmit)="onSubmit()" #mentorshipForm="ngForm">
+        <div class="form-group">
+          <label for="mentor">Profesor *</label>
+          <select
+            id="mentor"
+            name="mentor"
+            [(ngModel)]="mentorship.mentor"
+            required
+          >
+            <option value="">Selecciona un profesor</option>
+            <option *ngFor="let mentor of mentors" [value]="mentor.name">
+              {{ mentor.name }} - {{ mentor.subject }} ({{ mentor.experience }})
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="subject">Materia *</label>
+          <input 
+            type="text" 
+            id="subject"
+            name="subject"
+            [(ngModel)]="mentorship.subject"
+            required
+            placeholder="Ej: Cálculo Diferencial"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="date">Fecha *</label>
+          <input 
+            type="date" 
+            id="date"
+            name="date"
+            [(ngModel)]="mentorship.date"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="time">Hora *</label>
+          <input 
+            type="time" 
+            id="time"
+            name="time"
+            [(ngModel)]="mentorship.time"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="description">Descripción</label>
+          <textarea 
+            id="description"
+            name="description"
+            [(ngModel)]="mentorship.description"
+            rows="3"
+            placeholder="Describe brevemente lo que necesitas repasar..."
+          ></textarea>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" (click)="hide()">Cancelar</button>
+          <button 
+            type="submit" 
+            class="btn-primary"
+            [disabled]="!mentorshipForm.form.valid"
+          >
+            {{ isEditMode ? 'Guardar Cambios' : 'Crear Mentoría' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

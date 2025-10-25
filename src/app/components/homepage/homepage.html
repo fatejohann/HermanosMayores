@@ -35,17 +35,24 @@
     @if (upcomingMentorships.length > 0) {
       <div class="mentorships-list">
         @for (mentorship of upcomingMentorships; track mentorship) {
-          <div 
-            class="mentorship-item" 
-            (click)="viewMentorshipDetails(mentorship)"
-          >
-            <div class="mentorship-info">
+          <div class="mentorship-item">
+            <div class="mentorship-info" (click)="viewMentorshipDetails(mentorship)">
               <h3>{{ mentorship.subject }}</h3>
               <p><strong>Mentor:</strong> {{ mentorship.mentor }}</p>
               <p><strong>Fecha:</strong> {{ mentorship.date }} a las {{ mentorship.time }}</p>
             </div>
-            <div class="mentorship-status" [ngClass]="mentorship.status">
-              {{ mentorship.status }}
+            <div class="mentorship-actions">
+              <div class="mentorship-status" [ngClass]="mentorship.status">
+                {{ mentorship.status }}
+              </div>
+              <div class="action-buttons">
+                <button class="action-btn edit" (click)="editMentorship(mentorship)">
+                  <span class="icon">✏️</span>
+                </button>
+                <button class="action-btn delete" (click)="deleteMentorship(mentorship)">
+                  <span class="icon">🗑️</span>
+                </button>
+              </div>
             </div>
           </div>
         }
@@ -82,4 +89,7 @@
      
     </div>
   </main>
+
+  <!-- Modal para crear nueva mentoría -->
+  <app-create-mentorship-modal (save)="onMentorshipSave($event)"></app-create-mentorship-modal>
 </div>

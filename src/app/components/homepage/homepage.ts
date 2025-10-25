@@ -1,35 +1,43 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth';
 import { NgIf } from '@angular/common';
+import { CreateMentorshipModalComponent } from '../create-mentorship-modal/create-mentorship-modal';
 
 
 @Component({
   selector: 'app-homepage',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, CreateMentorshipModalComponent],
   templateUrl: './homepage.html',
   styleUrls: ['./homepage.css']
 })
 export class HomepageComponent implements OnInit {
+  @ViewChild(CreateMentorshipModalComponent)
+  private createMentorshipModal!: CreateMentorshipModalComponent;
+  
   userEmail: string = '';
   
   // Datos simulados para el prototipo
   upcomingMentorships = [
     {
+      id: '1',
       mentor: 'Ana García',
       subject: 'Cálculo Diferencial',
       date: '2025-09-16',
       time: '14:00',
-      status: 'confirmada'
+      status: 'confirmada',
+      description: ''
     },
     {
+      id: '2',
       mentor: 'Carlos López',
       subject: 'Programación Web',
       date: '2025-09-18',
       time: '16:30',
-      status: 'pendiente'
+      status: 'pendiente',
+      description: ''
     }
   ];
 
@@ -82,10 +90,36 @@ export class HomepageComponent implements OnInit {
   }
 
   addNewMentorship(): void {
-    // Por ahora solo mostraremos un mensaje, pero aquí podrías:
-    // 1. Abrir un modal o navegar a una nueva página para crear la mentoría
-    // 2. Mostrar un formulario con los campos necesarios
-    // 3. Implementar la lógica para guardar la nueva mentoría
-    alert('Función para agregar nueva mentoría. Aquí se debería abrir un formulario o modal.');
+    this.createMentorshipModal.isEditMode = false;
+    this.createMentorshipModal.mentors = this.availableMentors;
+    this.createMentorshipModal.show();
+  }
+
+  editMentorship(mentorship: any): void {
+    this.createMentorshipModal.isEditMode = true;
+    this.createMentorshipModal.mentors = this.availableMentors;
+    this.createMentorshipModal.mentorship = { ...mentorship };
+    this.createMentorshipModal.show();
+  }
+
+  deleteMentorship(mentorship: any): void {
+    if (confirm('¿Estás seguro de que deseas eliminar esta mentoría?')) {
+      this.upcomingMentorships = this.upcomingMentorships.filter(
+        m => m.id !== mentorship.id
+      );
+    }
+  }
+
+  onMentorshipSave(event: any): void {
+    if (event.action === 'create') {
+      this.upcomingMentorships.push(event.mentorship);
+    } else if (event.action === 'update') {
+      const index = this.upcomingMentorships.findIndex(
+        m => m.id === event.mentorship.id
+      );
+      if (index !== -1) {
+        this.upcomingMentorships[index] = event.mentorship;
+      }
+    }
   }
 }
