@@ -37,16 +37,15 @@ export class LoginComponent {
   }
 
   goToRegister(): void {
-    // Por ahora solo mostrar mensaje, después puedes implementar el registro
-    alert('Función de registro pendiente de implementar');
+    this.router.navigate(['/register']);
   }
 
   goBack(): void {
     this.router.navigate(['/landing']);
   }
 
-  forgotPassword(): void {
-    // Por ahora solo mostrar mensaje, después puedes implementar recuperación
-    alert('Función de recuperación de contraseña pendiente de implementar');
-  }
+  forgotPassword(event: Event): void {
+  event.preventDefault();
+  this.router.navigate(['/forgot-password']);
+}
 }

@@ -10,10 +10,25 @@ export class AuthService {
 
   // Simular login - solo verifica que los campos no estén vacíos
   login(email: string, password: string): boolean {
-    if (email.trim() !== '' && password.trim() !== '') {
-      // Simular almacenamiento de sesión
+    const users = JSON.parse(localStorage.getItem('users') || '[]');
+    const user = users.find((u: any) => u.email === email && u.password === password);
+    if (user) {
       sessionStorage.setItem('isLoggedIn', 'true');
       sessionStorage.setItem('userEmail', email);
+      return true;
+    }
+    return false;
+  }
+
+    register(email: string, password: string): boolean {
+    if (email.trim() !== '' && password.trim() !== '') {
+      const users = JSON.parse(localStorage.getItem('users') || '[]');
+      // Verifica si el usuario ya existe
+      if (users.find((u: any) => u.email === email)) {
+        return false;
+      }
+      users.push({ email, password });
+      localStorage.setItem('users', JSON.stringify(users));
       return true;
     }
     return false;
