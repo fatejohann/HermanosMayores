@@ -22,17 +22,20 @@
       </section>
 
     <div class="content-grid">
-      
-<button (click)="uploadInitialData()">Cargar datos iniciales</button>
+
 
   <!-- Próximas Mentorías -->
   <section class="card">
-    <div class="card-header">
-      <h2 class="card-title">📅 Próximas Mentorías</h2>
-      <button class="add-mentorship-btn" (click)="addNewMentorship()">
-        <span>+</span> Nueva Mentoría
-      </button>
-    </div>
+   <div class="card-header">
+  <h2 class="card-title">📅 Próximas Mentorías</h2>
+  <div class="card-actions">
+    <button class="load-json-btn" (click)="uploadInitialData()">🔄 Cargar</button>
+    <button class="add-mentorship-btn" (click)="addNewMentorship()">
+      <span>+</span> Nueva Mentoría
+    </button>
+  </div>
+</div>
+
 
     @if (upcomingMentorships.length > 0) {
       <div class="mentorships-list">

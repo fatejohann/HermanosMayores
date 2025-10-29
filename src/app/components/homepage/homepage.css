@@ -249,6 +249,48 @@
   margin-bottom: 0.25rem;
 }
 
+/* Botón de carga de datos iniciales */
+.load-json-btn {
+  background: #667eea;
+  color: white;
+  border: none;
+  padding: 0.35rem 0.75rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(102, 126, 234, 0.3);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  opacity: 0.85;
+}
+
+.load-json-btn:hover {
+  background: #5a67d8;
+  opacity: 1;
+  transform: scale(1.05);
+}
+
+.load-json-btn:active {
+  transform: scale(0.97);
+}
+
+/* Contenedor opcional para posicionar el botón */
+.json-upload-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+}
+
+.card-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+
 .rating {
   color: #f6ad55;
   font-size: 0.9rem;
