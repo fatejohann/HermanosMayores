@@ -1,0 +1,40 @@
+{
+  "mentorships": [
+    {
+      "mentor": "Ana García",
+      "subject": "Cálculo Diferencial",
+      "date": "2025-09-16",
+      "time": "14:00",
+      "status": "confirmada",
+      "description": ""
+    },
+    {
+      "mentor": "Carlos López",
+      "subject": "Programación Web",
+      "date": "2025-09-18",
+      "time": "16:30",
+      "status": "pendiente",
+      "description": ""
+    }
+  ],
+  "mentors": [
+    {
+      "name": "María Rodríguez",
+      "subject": "Matemáticas",
+      "rating": 4.8,
+      "experience": "cuarto ciclo"
+    },
+    {
+      "name": "Juan Pérez",
+      "subject": "Física",
+      "rating": 4.9,
+      "experience": "tercer ciclo"
+    },
+    {
+      "name": "Laura Martínez",
+      "subject": "Química",
+      "rating": 4.7,
+      "experience": "cuarto ciclo"
+    }
+  ]
+}

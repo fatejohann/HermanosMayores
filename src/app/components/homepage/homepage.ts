@@ -2,9 +2,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth';
-import { NgIf } from '@angular/common';
 import { CreateMentorshipModalComponent } from '../create-mentorship-modal/create-mentorship-modal';
-
+import { FirebaseService } from '../../services/firebase.service';
+import { DataLoaderService } from '../../services/data-loader.service';
 
 @Component({
   selector: 'app-homepage',
@@ -16,67 +16,53 @@ import { CreateMentorshipModalComponent } from '../create-mentorship-modal/creat
 export class HomepageComponent implements OnInit {
   @ViewChild(CreateMentorshipModalComponent)
   private createMentorshipModal!: CreateMentorshipModalComponent;
-  
-  userEmail: string = '';
-  
-  // Datos simulados para el prototipo
-  upcomingMentorships = [
-    {
-      id: '1',
-      mentor: 'Ana García',
-      subject: 'Cálculo Diferencial',
-      date: '2025-09-16',
-      time: '14:00',
-      status: 'confirmada',
-      description: ''
-    },
-    {
-      id: '2',
-      mentor: 'Carlos López',
-      subject: 'Programación Web',
-      date: '2025-09-18',
-      time: '16:30',
-      status: 'pendiente',
-      description: ''
-    }
-  ];
 
-  availableMentors = [
-    {
-      name: 'María Rodriguez',
-      subject: 'Matemáticas',
-      rating: 4.8,
-      experience: 'cuarto ciclo'
-    },
-    {
-      name: 'Juan Pérez',
-      subject: 'Física',
-      rating: 4.9,
-      experience: 'tercer ciclo'
-    },
-    {
-      name: 'Laura Martínez',
-      subject: 'Química',
-      rating: 4.7,
-      experience: 'cuarto ciclo'
-    }
-  ];
+  userEmail: string = '';
+  upcomingMentorships: any[] = [];
+  availableMentors: any[] = [];
 
   constructor(
     private authService: AuthService,
+    private firebaseService: FirebaseService,
+    private dataLoaderService: DataLoaderService,
     private router: Router
   ) {}
 
-  ngOnInit(): void {
-    // Verificar si está logueado, si no redirigir al login
+  async ngOnInit() {
+    // Verificar si está logueado
     if (!this.authService.isLoggedIn()) {
       this.router.navigate(['/login']);
       return;
     }
-    
+
     this.userEmail = this.authService.getUserEmail();
+
+    // 🔄 Cargar datos desde Firebase
+    await this.loadMentorships();
+    await this.loadMentors();
   }
 
+  // 🧠 Cargar mentorías desde Firebase
+  async loadMentorships() {
+    this.upcomingMentorships = await this.firebaseService.getMentorships();
+  }
+
+  // 🧠 Cargar mentores desde Firebase
+  async loadMentors() {
+    this.availableMentors = await this.firebaseService.getMentors();
+  }
+
+  // 🚀 Subir datos del JSON local a Firebase (solo para inicializar)
+  async uploadInitialData() {
+    if (confirm('¿Seguro que deseas subir los datos del JSON a Firebase?')) {
+      await this.dataLoaderService.uploadDataToFirebase();
+      alert('✅ Datos cargados correctamente.');
+      await this.loadMentorships();
+      await this.loadMentors();
+    }
+  }
+
+  // 🔒 Cerrar sesión
   logout(): void {
     this.authService.logout();
   }
@@ -102,21 +88,20 @@ export class HomepageComponent implements OnInit {
     this.createMentorshipModal.show();
   }
 
-  deleteMentorship(mentorship: any): void {
+  async deleteMentorship(mentorship: any) {
     if (confirm('¿Estás seguro de que deseas eliminar esta mentoría?')) {
-      this.upcomingMentorships = this.upcomingMentorships.filter(
-        m => m.id !== mentorship.id
-      );
+      await this.firebaseService.deleteMentorship(mentorship.id);
+      this.upcomingMentorships = this.upcomingMentorships.filter(m => m.id !== mentorship.id);
     }
   }
 
-  onMentorshipSave(event: any): void {
+  async onMentorshipSave(event: any) {
     if (event.action === 'create') {
-      this.upcomingMentorships.push(event.mentorship);
+      const id = await this.firebaseService.saveMentorship(event.mentorship);
+      this.upcomingMentorships.push({ id, ...event.mentorship });
     } else if (event.action === 'update') {
-      const index = this.upcomingMentorships.findIndex(
-        m => m.id === event.mentorship.id
-      );
+      await this.firebaseService.updateMentorship(event.mentorship.id, event.mentorship);
+      const index = this.upcomingMentorships.findIndex(m => m.id === event.mentorship.id);
       if (index !== -1) {
         this.upcomingMentorships[index] = event.mentorship;
       }
