@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -21,7 +21,7 @@ export class Register {
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    @Inject(Router) private router: Router
   ) {}
 
   togglePasswordVisibility1(): void {
@@ -32,7 +32,7 @@ export class Register {
     this.showPassword2 = !this.showPassword2;
   }
 
-  onRegister(): void {
+  async onRegister(): Promise<void> {
     this.errorMessage = '';
     if (!this.email || !this.password || !this.confirmPassword) {
       this.errorMessage = 'Por favor, completa todos los campos';
@@ -42,12 +42,11 @@ export class Register {
       this.errorMessage = 'Las contraseñas no coinciden';
       return;
     }
-    const result = this.authService.register(this.email, this.password);
-    if (result) {
-      alert('Registro exitoso. Ahora puedes iniciar sesión.');
-      this.router.navigate(['/login']);
-    } else {
-      this.errorMessage = 'El correo ya está registrado o hubo un error.';
+    
+    try {
+      await this.authService.register(this.email, this.password);
+    } catch (error: any) {
+      this.errorMessage = error.message;
     }
   }
 

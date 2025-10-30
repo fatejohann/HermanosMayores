@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth';
@@ -25,7 +25,7 @@ export class HomepageComponent implements OnInit {
     private authService: AuthService,
     private firebaseService: FirebaseService,
     private dataLoaderService: DataLoaderService,
-    private router: Router
+    @Inject(Router) private router: Router
   ) {}
 
   async ngOnInit() {
@@ -37,22 +37,22 @@ export class HomepageComponent implements OnInit {
 
     this.userEmail = this.authService.getUserEmail();
 
-    // 🔄 Cargar datos desde Firebase
+    // Cargar datos desde Firebase
     await this.loadMentorships();
     await this.loadMentors();
   }
 
-  // 🧠 Cargar mentorías desde Firebase
+  // Cargar mentorías desde Firebase
   async loadMentorships() {
     this.upcomingMentorships = await this.firebaseService.getMentorships();
   }
 
-  // 🧠 Cargar mentores desde Firebase
+  //Cargar mentores desde Firebase
   async loadMentors() {
     this.availableMentors = await this.firebaseService.getMentors();
   }
 
-  // 🚀 Subir datos del JSON local a Firebase (solo para inicializar)
+  // Subir datos del JSON local a Firebase (solo para inicializar)
   async uploadInitialData() {
     if (confirm('¿Seguro que deseas subir los datos del JSON a Firebase?')) {
       await this.dataLoaderService.uploadDataToFirebase();
@@ -62,7 +62,7 @@ export class HomepageComponent implements OnInit {
     }
   }
 
-  // 🔒 Cerrar sesión
+  // Cerrar sesión
   logout(): void {
     this.authService.logout();
   }

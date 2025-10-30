@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router} from '@angular/router';
 import { AuthService } from '../../services/auth';
 
 @Component({
@@ -19,20 +19,20 @@ export class LoginComponent {
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    @Inject(Router) private router: Router
   ) {}
 
   togglePasswordVisibility(): void {
     this.showPassword = !this.showPassword;
   }
 
-  onSubmit(): void {
+  async onSubmit(): Promise<void> {
     this.errorMessage = '';
     
-    if (this.authService.login(this.email, this.password)) {
-      this.router.navigate(['/homepage']);
-    } else {
-      this.errorMessage = 'Por favor, completa todos los campos';
+    try {
+      await this.authService.login(this.email, this.password);
+    } catch (error: any) {
+      this.errorMessage = error.message;
     }
   }
 

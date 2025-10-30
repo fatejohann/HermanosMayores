@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
@@ -72,7 +72,7 @@ export class LandingComponent {
     { number: '25', label: 'Carreras Disponibles' }
   ];
 
-  constructor(private router: Router) {}
+  constructor(@Inject(Router) private router: Router) {}
 
   goToLogin(): void {
     this.router.navigate(['/login']);

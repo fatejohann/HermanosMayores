@@ -1,53 +1,83 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, User } from 'firebase/auth';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  private auth = getAuth();
+  private userSubject = new BehaviorSubject<User | null>(null);
+  user$ = this.userSubject.asObservable();
 
-  constructor(private router: Router) { }
-
-  // Simular login - solo verifica que los campos no estén vacíos
-  login(email: string, password: string): boolean {
-    const users = JSON.parse(localStorage.getItem('users') || '[]');
-    const user = users.find((u: any) => u.email === email && u.password === password);
-    if (user) {
-      sessionStorage.setItem('isLoggedIn', 'true');
-      sessionStorage.setItem('userEmail', email);
-      return true;
-    }
-    return false;
+  constructor(@Inject(Router) private router: Router) {
+    // Observar cambios en el estado de autenticación
+    onAuthStateChanged(this.auth, (user) => {
+      this.userSubject.next(user);
+    });
   }
 
-    register(email: string, password: string): boolean {
-    if (email.trim() !== '' && password.trim() !== '') {
-      const users = JSON.parse(localStorage.getItem('users') || '[]');
-      // Verifica si el usuario ya existe
-      if (users.find((u: any) => u.email === email)) {
-        return false;
-      }
-      users.push({ email, password });
-      localStorage.setItem('users', JSON.stringify(users));
-      return true;
+  async login(email: string, password: string): Promise<void> {
+    try {
+      await signInWithEmailAndPassword(this.auth, email, password);
+      this.router.navigate(['/homepage']);
+    } catch (error: any) {
+      throw this.handleAuthError(error);
     }
-    return false;
   }
 
-  // Verificar si el usuario está logueado
+  async register(email: string, password: string): Promise<void> {
+    try {
+      await createUserWithEmailAndPassword(this.auth, email, password);
+      this.router.navigate(['/homepage']);
+    } catch (error: any) {
+      throw this.handleAuthError(error);
+    }
+  }
+
   isLoggedIn(): boolean {
-    return sessionStorage.getItem('isLoggedIn') === 'true';
+    return this.auth.currentUser !== null;
   }
 
-  // Obtener email del usuario
   getUserEmail(): string {
-    return sessionStorage.getItem('userEmail') || '';
+    return this.auth.currentUser?.email || '';
   }
 
-  // Cerrar sesión
-  logout(): void {
-    sessionStorage.removeItem('isLoggedIn');
-    sessionStorage.removeItem('userEmail');
-    this.router.navigate(['/login']);
+  async logout(): Promise<void> {
+    try {
+      await signOut(this.auth);
+      this.router.navigate(['/login']);
+    } catch (error: any) {
+      throw this.handleAuthError(error);
+    }
+  }
+
+  private handleAuthError(error: any): Error {
+    let message = 'Ha ocurrido un error de autenticación';
+    switch (error.code) {
+      case 'auth/email-already-in-use':
+        message = 'Este correo electrónico ya está registrado';
+        break;
+      case 'auth/invalid-email':
+        message = 'El correo electrónico no es válido';
+        break;
+      case 'auth/operation-not-allowed':
+        message = 'Operación no permitida';
+        break;
+      case 'auth/weak-password':
+        message = 'La contraseña debe tener al menos 6 caracteres';
+        break;
+      case 'auth/user-disabled':
+        message = 'Esta cuenta ha sido deshabilitada';
+        break;
+      case 'auth/user-not-found':
+        message = 'No existe una cuenta con este correo electrónico';
+        break;
+      case 'auth/wrong-password':
+        message = 'Contraseña incorrecta';
+        break;
+    }
+    return new Error(message);
   }
 }
